@@ -1,0 +1,219 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<title>Funcionarios</title>
+		<h:outputStylesheet>
+            th, td {
+                text-align: center;
+            }
+
+            h3 {
+                margin-top: 0;
+                text-align: center;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            }
+        </h:outputStylesheet>
+	</h:head>
+	<h:body>
+		<!-- MENU DE NAVEGACAO -->
+		<h:form id="menu">
+			<p:menubar>
+				<p:submenu label="Cadastro" icon="pi pi-fw pi-user">
+					<p:menuitem value="Funcionario" icon="pi pi-fw pi-user-plus" action="#{indexController.redirectFuncionario()}"/>
+				</p:submenu>
+			</p:menubar>
+		</h:form>
+
+		<p:outputPanel>
+			<!-- TABELA DE FUNCIONARIOS CADASTRADOS -->
+			<h3>Funcionarios cadastrados</h3>
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<h:form id="funcionarios">
+						<p:growl id="growl" sticky="true" />
+
+						<p:dataTable id="funcList" var="func"
+							value="#{funcionarioController.funcionarios}"
+							emptyMessage="Nenhum funcionario cadastrado">
+
+							<p:column headerText="Id">
+								<h:outputText value="#{func.id}" />
+							</p:column>
+
+							<p:column headerText="Nome">
+								<h:outputText value="#{func.nome}" />
+							</p:column>
+
+							<p:column headerText="CPF">
+								<h:outputText value="#{func.cpf}" />
+							</p:column>
+
+							<p:column headerText="Email">
+								<h:outputText value="#{func.email}" />
+							</p:column>
+
+							<p:column headerText="Telefone">
+								<h:outputText value="#{func.telefone}" />
+							</p:column>
+
+							<p:column headerText="Cargo">
+								<h:outputText value="#{func.cargo}" />
+							</p:column>
+
+							<p:column headerText="Salario">
+								<h:outputText value="#{func.salario}">
+									<f:convertNumber type="currency" currencySymbol="R$ "
+										locale="pt_BR" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Data Admissao">
+								<h:outputText value="#{func.dataAdmissao}" />
+							</p:column>
+
+							<p:column headerText="Ativo">
+								<h:outputText value="#{func.ativo ? 'Sim' : 'Nao'}" />
+							</p:column>
+
+							<p:column headerText="Editar">
+								<p:commandButton update="funcList :add" value="Editar"
+									icon="pi pi-pencil"
+									action="#{funcionarioController.edit(func)}"
+									styleClass="ui-button-info">
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="Excluir">
+								<p:commandButton update="funcList" value="Excluir"
+									icon="pi pi-trash"
+									action="#{funcionarioController.delete(func)}"
+									styleClass="ui-button-danger">
+									<p:confirm header="Atencao"
+										message="Tem certeza que deseja excluir este funcionario?"
+										icon="pi pi-exclamation-triangle"/>
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+							<p:commandButton value="Nao" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+							<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+						</p:confirmDialog>
+					</h:form>
+				</div>
+			</div>
+
+			<!-- FORMULARIO DE CADASTRO / EDICAO -->
+			<h3>
+				<h:outputText value="Editar funcionario" rendered="#{funcionarioController.isUpdate}" />
+				<h:outputText value="Cadastrar novo funcionario" rendered="#{!funcionarioController.isUpdate}" />
+			</h3>
+			<div class="ui-g">
+				<div class="ui-g-2"></div>
+				<div class="ui-g-8">
+					<h:form id="add">
+						<h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;">
+
+							<p:outputLabel for="nome" value="Nome" />
+							<p:inputText id="nome"
+								value="#{funcionarioController.funcionario.nome}"
+								required="true" requiredMessage="Nome e obrigatorio"
+								size="50" maxlength="100" />
+							<p:message for="nome" />
+
+							<p:outputLabel for="cpf" value="CPF" />
+							<p:inputMask id="cpf"
+								value="#{funcionarioController.funcionario.cpf}"
+								mask="999.999.999-99" required="true"
+								requiredMessage="CPF e obrigatorio" />
+							<p:message for="cpf" />
+
+							<p:outputLabel for="email" value="E-Mail" />
+							<p:inputText id="email"
+								value="#{funcionarioController.funcionario.email}"
+								required="true" requiredMessage="Email e obrigatorio"
+								validatorMessage="Email invalido" size="50">
+								<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+							</p:inputText>
+							<p:message for="email" />
+
+							<p:outputLabel for="telefone" value="Telefone" />
+							<p:inputMask id="telefone"
+								value="#{funcionarioController.funcionario.telefone}"
+								mask="(99) 99999-9999" required="true"
+								requiredMessage="Telefone e obrigatorio" />
+							<p:message for="telefone" />
+
+							<p:outputLabel for="cargo" value="Cargo" />
+							<p:selectOneMenu id="cargo"
+								value="#{funcionarioController.funcionario.cargo}"
+								required="true" requiredMessage="Cargo e obrigatorio">
+								<f:selectItem itemLabel="Selecione um cargo" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{funcionarioController.cargos}" var="c"
+									itemLabel="#{c}" itemValue="#{c}" />
+							</p:selectOneMenu>
+							<p:message for="cargo" />
+
+							<p:outputLabel for="salario" value="Salario" />
+							<p:inputNumber id="salario"
+								value="#{funcionarioController.funcionario.salario}"
+								required="true" requiredMessage="Salario e obrigatorio"
+								symbol="R$ " symbolPosition="p"
+								decimalSeparator="," thousandSeparator="."
+								minValue="0" />
+							<p:message for="salario" />
+
+							<p:outputLabel for="dataAdmissao" value="Data de Admissao" />
+							<p:datePicker id="dataAdmissao"
+								value="#{funcionarioController.funcionario.dataAdmissao}"
+								pattern="dd/MM/yyyy"
+								required="true" requiredMessage="Data de admissao e obrigatoria"
+								showIcon="true" />
+							<p:message for="dataAdmissao" />
+
+							<p:outputLabel for="ativo" value="Ativo" />
+							<p:selectBooleanCheckbox id="ativo"
+								value="#{funcionarioController.funcionario.ativo}" />
+							<p:spacer />
+
+							<!-- BOTOES DE ACAO -->
+							<p:commandLink id="voltar"
+								action="#{funcionarioController.voltarTelaInicial()}"
+								style="margin-right:20px;" ajax="false" immediate="true">
+								<h:outputText value="Voltar"/>
+							</p:commandLink>
+
+							<p:commandButton update="@form :funcionarios:funcList"
+								value="Cadastrar" action="#{funcionarioController.add}"
+								rendered="#{!funcionarioController.isUpdate}"
+								icon="pi pi-check" />
+
+							<p:commandButton update="@form :funcionarios:funcList"
+								value="Atualizar" action="#{funcionarioController.update}"
+								rendered="#{funcionarioController.isUpdate}"
+								icon="pi pi-refresh" />
+
+							<p:commandButton update="add"
+								value="Cancelar" action="#{funcionarioController.cancel}"
+								immediate="true" icon="pi pi-times">
+								<f:ajax render="add" resetValues="true"/>
+							</p:commandButton>
+
+						</h:panelGrid>
+					</h:form>
+				</div>
+				<div class="ui-g-2"></div>
+			</div>
+		</p:outputPanel>
+	</h:body>
+</f:view>
+</html>

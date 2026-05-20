@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Cadastro de Funcionarios</title>
+</h:head>
+
+<h:body>
+	<p:outputLabel value="Sistema de Cadastro de Funcionarios" style="font-size: 1.5em; font-weight: bold;" /><br/><br/>
+	<h:form id="menu">
+		<p:menubar>
+			<p:submenu label="Cadastro" icon="pi pi-fw pi-user">
+				<p:menuitem value="Funcionario" icon="pi pi-fw pi-user-plus" action="#{indexController.redirectFuncionario()}"/>
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+</h:body>
+</html>
