@@ -1,11 +1,11 @@
-package br.com.douglas.dao.generic
+package br.com.douglas.dao.generic;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import br.com.douglas.domain.Persistente;
 import br.com.douglas.exceptions.DAOException;

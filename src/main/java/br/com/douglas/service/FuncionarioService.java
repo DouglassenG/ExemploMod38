@@ -3,8 +3,8 @@ package br.com.douglas.service;
 import java.math.BigDecimal;
 import java.util.List;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import br.com.douglas.dao.IFuncionarioDAO;
 import br.com.douglas.domain.Funcionario;

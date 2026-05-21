@@ -2,8 +2,8 @@ package br.com.douglas.dao;
 
 import java.util.List;
 
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 import br.com.douglas.dao.generic.GenericDAO;
 import br.com.douglas.domain.Funcionario;
